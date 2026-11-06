@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "sempera": {
+      "command": "npx",
+      "args": ["-y", "@sempera/mcp"],
+      "env": { "SEMPERA_API_KEY": "${user_config.sempera_api_key}" }
+    }
+  }
+}

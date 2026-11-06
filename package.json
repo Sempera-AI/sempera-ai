@@ -1,0 +1,18 @@
+{
+  "name": "@sempera/ai",
+  "version": "0.1.0",
+  "description": "Skills, a plugin manifest and editor rules that teach AI coding agents to build and operate Sempera phone agents",
+  "license": "MIT",
+  "author": "Sempera Labs, Inc. <hello@sempera.org>",
+  "homepage": "https://github.com/Sempera-AI/sempera-ai#readme",
+  "repository": { "type": "git", "url": "git+https://github.com/Sempera-AI/sempera-ai.git" },
+  "bugs": { "url": "https://github.com/Sempera-AI/sempera-ai/issues" },
+  "keywords": ["sempera", "voice", "phone", "ai", "agent-skills", "mcp", "plugin"],
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "files": [".claude-plugin", ".codex-plugin", ".mcp.json", "skills", "rules", "README.md"],
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "publishConfig": { "access": "public" }
+}

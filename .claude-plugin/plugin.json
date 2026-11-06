@@ -1,0 +1,22 @@
+{
+  "name": "sempera",
+  "displayName": "Sempera",
+  "version": "0.1.0",
+  "description": "Build, test and operate Sempera AI phone agents from your coding agent: five skills and the Sempera MCP server.",
+  "author": { "name": "Sempera Labs, Inc.", "url": "https://sempera.org" },
+  "homepage": "https://github.com/Sempera-AI/sempera-ai",
+  "repository": "https://github.com/Sempera-AI/sempera-ai",
+  "license": "MIT",
+  "keywords": ["sempera", "voice", "phone", "ai", "mcp"],
+  "skills": "./skills",
+  "mcpServers": "./.mcp.json",
+  "userConfig": {
+    "sempera_api_key": {
+      "type": "string",
+      "title": "Sempera API key",
+      "description": "A workspace API key from the Sempera App, Settings, API keys. Give it only the scopes you want your coding agent to have.",
+      "sensitive": true,
+      "required": true
+    }
+  }
+}

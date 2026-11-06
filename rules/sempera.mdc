@@ -1,0 +1,35 @@
+---
+description: Working with the Sempera API (AI phone agents): auth, safety rules and the routes that matter
+alwaysApply: false
+globs:
+---
+
+# Sempera API rules
+
+Sempera runs AI phone agents. The public API is `https://api.sempera.org`; the contract is `https://api.sempera.org/openapi.json`. Use only routes in that contract.
+
+## Auth and secrets
+
+- Send `Authorization: Bearer $SEMPERA_API_KEY`. Read the key from the environment or the OS keychain. Never write it into source, tests, config files, logs or commits.
+- Check access first with `GET /v1/me`. If a scope is missing (`403 insufficient_scope`), report which one; do not search for another key.
+
+## Reads are free, sends are not
+
+- Safe reads: `GET /v1/agents`, `/v1/agents/{id}`, `/v1/calls`, `/v1/calls/{id}`, `/v1/sessions`, `/v1/sessions/{id}`, `/v1/phone-numbers?agent_id=`, `/v1/sms/numbers`.
+- `POST /v1/calls` and `POST /v1/sms/send` reach real people. Never default the recipient, the agent or the consent sentence. Require all three from the user: `agent_id`, the E.164 number, and one sentence saying why the person agreed to be contacted. Show them and get a yes before sending.
+- Every POST that creates or sends takes an `Idempotency-Key`. Make a fresh one per intended action. After a timeout, read before you retry, and retry only with the same key.
+- Never retry a refusal with a different number or key to get past calling hours, the do-not-contact list, opt-outs or caps.
+
+## Agents
+
+- An agent has an editable draft (`PATCH /v1/agents/{id}/draft` with `expect_revision`) and immutable published versions. Calls run a published version only.
+- Do not publish (`POST /v1/agents/{id}/publish`), archive or delete without an explicit instruction from the user.
+
+## Webhooks
+
+- Verify `X-Sempera-Signature` (`t=<unix seconds>,v1=<hex>`): HMAC-SHA256 of `"<t>." + raw_body` keyed with the endpoint secret, constant-time compare, reject timestamps more than 5 minutes off. Verify the raw bytes before parsing.
+- Delivery is at least once; drop repeats by `X-Sempera-Event-Id`. Answer `2xx` within 10 seconds.
+
+## Personal data
+
+Transcripts and call records contain personal information. Do not copy them into code, fixtures, commits or tickets. Use synthetic numbers and names (for example `+14165550123`, "Northwind Barbers") in tests and examples.
