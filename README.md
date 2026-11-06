@@ -27,7 +27,11 @@ Create an API key in the Sempera App under Settings, API keys. Give it only the 
 ### Claude Code
 
 ```bash
-# From a clone of this repository
+# From npm
+npm install @sempera/ai
+claude --plugin-dir ./node_modules/@sempera/ai
+
+# Or from a clone of this repository
 claude --plugin-dir ./sempera-ai
 ```
 
